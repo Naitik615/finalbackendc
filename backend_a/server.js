@@ -256,3 +256,14 @@ app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log("Ready to process requests");
 });
+
+app.get('/orders', (req, res) => {
+    try {
+        const fileContent = fs.readFileSync(ORDERS_FILE, 'utf8');
+        const orders = fileContent ? JSON.parse(fileContent) : [];
+        res.json(orders); // Return the orders as JSON
+    } catch (error) {
+        console.error('Error reading orders file:', error);
+        res.status(500).json({ error: 'Unable to read orders file' });
+    }
+});
